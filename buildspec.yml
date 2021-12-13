@@ -1,0 +1,22 @@
+version: 0.2
+
+run-as: root
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - npm_config_user=root
+      - npm install -g @angular/cli@1.6.3
+  build:
+    run-as: root
+    commands:
+      - chmod -R 777 /usr/local/lib/node_modules
+      - chown -R root:root /usr/local/lib/node_modules
+      - npm_config_user=root
+      - npm install
+      - ng build --env=$BUILD_ENV
+  post_build:
+    commands:
+      - aws s3 sync dist/ s3://$BUCKET_NAME --delete
