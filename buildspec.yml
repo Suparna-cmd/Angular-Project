@@ -16,7 +16,7 @@ phases:
       - chown -R root:root /usr/local/lib/node_modules
       - npm_config_user=root
       - npm install
-      - ng build --env=$BUILD_ENV
+      - ng build
   post_build:
     commands:
       - aws s3 sync dist/ s3://$BUCKET_NAME --delete
